@@ -70,7 +70,9 @@ These options are well documented in the [Cloudflare Docs](https://developers.cl
 - `resolved(response: string)`. Occurs when the CAPTCHA resolution value changed.
 
 ### Example
+
 For those who prefer examples over documentation, simply clone the repository and run
+
 ```bash
 $ yarn install
 $ ng build ngx-turnstile

@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  siteKey = "1x00000000000000000000AA";
+  siteKey = '1x00000000000000000000AA';
 
   onResolved(response: string | null) {
     console.log(response);
