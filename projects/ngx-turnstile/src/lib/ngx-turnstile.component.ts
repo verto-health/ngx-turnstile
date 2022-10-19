@@ -6,40 +6,37 @@ import {
   NgZone,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
-
-interface TurnstileOptions {
-  sitekey: string;
-  action?: string;
-  cData?: string;
-  callback?: (token: string) => void;
-  'error-callback'?: () => void;
-  'expired-callback'?: () => void;
-  theme?: 'light' | 'dark' | 'auto';
-  tabindex?: number;
-}
+import { TurnstileOptions } from './interfaces/turnstile-options';
 
 declare global {
   interface Window {
     onloadTurnstileCallback: () => void;
     turnstile: {
-      render: (idOrContainer: string | HTMLElement, options: TurnstileOptions) => string;
+      render: (
+        idOrContainer: string | HTMLElement,
+        options: TurnstileOptions
+      ) => string;
       reset: (widgetIdOrContainer: string | HTMLElement) => void;
-      getResponse: (widgetIdOrContainer: string | HTMLElement) => string | undefined;
+      getResponse: (
+        widgetIdOrContainer: string | HTMLElement
+      ) => string | undefined;
       remove: (widgetIdOrContainer: string | HTMLElement) => void;
     };
   }
 }
 
 const global = globalThis ?? window;
-let turnstileState = typeof (global as any).turnstile !== 'undefined' ? 'ready' : 'unloaded';
+let turnstileState =
+  typeof (global as any).turnstile !== 'undefined' ? 'ready' : 'unloaded';
 
 @Component({
-  selector: 'ng-turnstile',
+  selector: 'ngx-turnstile',
   template: ``,
-  exportAs: 'ng-turnstile',
+  exportAs: 'ngx-turnstile',
 })
-export class NgxTurnstileComponent implements AfterViewInit {
+export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() siteKey!: string;
   @Input() public action?: string;
   @Input() public cData?: string;
@@ -50,7 +47,10 @@ export class NgxTurnstileComponent implements AfterViewInit {
 
   private widgetId!: string;
 
-  constructor(private elementRef: ElementRef<HTMLElement>, private zone: NgZone) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private zone: NgZone
+  ) {}
 
   ngAfterViewInit(): void {
     let turnstileOptions: TurnstileOptions = {
@@ -70,7 +70,10 @@ export class NgxTurnstileComponent implements AfterViewInit {
 
     if (turnstileState === 'ready') {
       window.onloadTurnstileCallback = () => {
-        this.widgetId = window.turnstile.render(this.elementRef.nativeElement, turnstileOptions);
+        this.widgetId = window.turnstile.render(
+          this.elementRef.nativeElement,
+          turnstileOptions
+        );
       };
     }
   }
