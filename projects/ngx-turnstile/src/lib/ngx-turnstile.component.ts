@@ -40,7 +40,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() siteKey!: string;
   @Input() public action?: string;
   @Input() public cData?: string;
-  @Input() public theme?: 'light' | 'dark' | 'auto';
+  @Input() public theme?: 'light' | 'dark' | 'auto' = 'auto';
   @Input() tabIndex?: number;
 
   @Output() resolved = new EventEmitter<string | null>();
