@@ -1,0 +1,16 @@
+name: Build ngx-turnstile
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Angular
+        run: npm install -g @angular/cli
+      - name: Install Dependencies
+        run: yarn install
+      - name: Run eslint
+        run: ng lint
+      - name: Build ngx-turnstile
+        run: ng build ngx-turnstile
