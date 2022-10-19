@@ -1,0 +1,10 @@
+name: Run Prettier
+on: [push]
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Prettier
+        run: npm install -g prettier && npx prettier --check .
