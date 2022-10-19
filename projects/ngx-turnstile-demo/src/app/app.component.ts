@@ -20,18 +20,18 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         z-index: 2;
       }
 
-      .form-signin input[type="text"] {
+      .form-signin input[type='text'] {
         margin-bottom: -1px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
 
-      .form-signin input[type="password"] {
+      .form-signin input[type='password'] {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
-    `
+    `,
   ],
   standalone: true,
   template: `
@@ -69,7 +69,10 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
             Sign in
           </button>
           <p class="mt-5 mb-3 text-muted">
-            <a target="_blank" href="https://github.com/verto-health/ngx-turnstile">
+            <a
+              target="_blank"
+              href="https://github.com/verto-health/ngx-turnstile"
+            >
               <i class="bi bi-github"></i> See code
             </a>
           </p>
@@ -77,7 +80,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       </main>
     </div>
   `,
-  imports: [NgxTurnstileModule]
+  imports: [NgxTurnstileModule],
 })
 export class AppComponent {
   siteKey = '1x00000000000000000000AA';

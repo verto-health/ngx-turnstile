@@ -27,9 +27,8 @@ declare global {
   }
 }
 
-const global = globalThis ?? window;
-let turnstileState =
-  typeof (global as any).turnstile !== 'undefined' ? 'ready' : 'unloaded';
+const CALLBACK_NAME = 'onloadTurnstileCallback';
+type SupportedVersion = '0';
 
 @Component({
   selector: 'ngx-turnstile',
@@ -38,9 +37,10 @@ let turnstileState =
 })
 export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() siteKey!: string;
-  @Input() public action?: string;
-  @Input() public cData?: string;
-  @Input() public theme?: 'light' | 'dark' | 'auto' = 'auto';
+  @Input() action?: string;
+  @Input() cData?: string;
+  @Input() theme?: 'light' | 'dark' | 'auto' = 'auto';
+  @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
 
   @Output() resolved = new EventEmitter<string | null>();
@@ -51,6 +51,14 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     private elementRef: ElementRef<HTMLElement>,
     private zone: NgZone
   ) {}
+
+  private _getCloudflareTurnstileUrl(): string {
+    if (this.version === '0') {
+      return 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    }
+
+    throw 'Version not defined in ngx-turnstile component.';
+  }
 
   ngAfterViewInit(): void {
     let turnstileOptions: TurnstileOptions = {
@@ -66,33 +74,27 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
         this.zone.run(() => this.resolved.emit(null));
       },
     };
-    loadScript();
 
-    if (turnstileState === 'ready') {
-      window.onloadTurnstileCallback = () => {
-        this.widgetId = window.turnstile.render(
-          this.elementRef.nativeElement,
-          turnstileOptions
-        );
-      };
-    }
+    const script = document.createElement('script');
+
+    window[CALLBACK_NAME] = () => {
+      if (!this.elementRef?.nativeElement) {
+        return;
+      }
+
+      this.widgetId = window.turnstile.render(
+        this.elementRef.nativeElement,
+        turnstileOptions
+      );
+    };
+
+    script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   public ngOnDestroy(): void {
     window.turnstile.remove(this.widgetId);
-  }
-}
-
-function loadScript() {
-  if (turnstileState === 'unloaded') {
-    turnstileState = 'loading';
-    const script = document.createElement('script');
-    const baseUrl = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-
-    script.src = `${baseUrl}?render=explicit&onload=onloadTurnstileCallback`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-    turnstileState = 'ready';
   }
 }
