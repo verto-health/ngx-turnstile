@@ -1,6 +1,20 @@
 {
   "name": "ngx-turnstile",
-  "version": "0.0.3",
+  "description": "Angular component for Cloudflare Turnstile",
+  "version": "0.0.4",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/verto-health/ng-turnstile"
+  },
+  "homepage": "https://github.com/verto-health/ng-turnstile#readme",
+  "keywords": [
+    "angular",
+    "captcha",
+    "turnstile",
+    "cloudflare",
+    "cloudflare-turnstile"
+  ],
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0"
