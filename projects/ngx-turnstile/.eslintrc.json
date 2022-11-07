@@ -16,7 +16,6 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ngx",
             "style": "camelCase"
           }
         ],
