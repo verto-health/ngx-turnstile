@@ -15,18 +15,18 @@ npm install ngx-turnstile --save
 
 ## Quickstart
 
-To start, import the TurnstileModule in your app module.
+To start, import the NgxTurnstileModule in your app module.
 
 ```typescript
 // app.module.ts
-import { TurnstileModule } from "ngx-turnstile";
+import { NgxTurnstileModule } from "ngx-turnstile";
 import { BrowserModule } from "@angular/platform-browser";
 import { MyApp } from "./app.component.ts";
 
 @NgModule({
   bootstrap: [MyApp],
   declarations: [MyApp],
-  imports: [BrowserModule, TurnstileModule],
+  imports: [BrowserModule, NgxTurnstileModule],
 })
 export class MyAppModule {}
 ```
@@ -52,6 +52,40 @@ export class MyApp {
   }
 }
 ```
+
+## Usage with @angular/forms
+
+Import both NgxTurnstileModule and NgxTurnstileFormsModule modules in your app module.
+
+```typescript
+import { NgxTurnstileModule, NgxTurnstileFormsModule } from "ngx-turnstile";
+```
+
+Then import either FormsModule or ReactiveFormsModule from @angular/forms depending on the type of form you want to use.
+
+You can then use the ngModel, formControl or formControlName directives on the component depending on which module you imported from @angular/forms.
+
+### Reactive Form Example
+
+```html
+<ngx-turnstile
+  [siteKey]="siteKey"
+  theme="auto"
+  [formControl]="tokenControl"
+></ngx-turnstile>
+```
+
+### Template Driven Form Example
+
+```html
+<ngx-turnstile
+  [siteKey]="siteKey"
+  theme="light"
+  [(ngModel)]="token"
+></ngx-turnstile>
+```
+
+The component is read-only, meaning that you should not update the control with a custom value. Updating the control value will reset the component
 
 ## API
 

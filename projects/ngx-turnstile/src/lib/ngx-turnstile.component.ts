@@ -71,7 +71,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
         this.zone.run(() => this.resolved.emit(token));
       },
       'expired-callback': () => {
-        this.zone.run(() => this.resolved.emit(null));
+        this.zone.run(() => this.reset());
       },
     };
 
@@ -92,6 +92,13 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
+  }
+
+  reset() {
+    if (this.widgetId) {
+      this.resolved.emit(null);
+      window.turnstile.reset(this.widgetId);
+    }
   }
 
   public ngOnDestroy(): void {

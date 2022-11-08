@@ -1,10 +1,24 @@
 import { Component } from '@angular/core';
-import { NgxTurnstileModule } from 'ngx-turnstile';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   styles: [
     `
+      .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2em;
+      }
+      .example-container {
+        display: flex;
+        flex-direction: column;
+        min-width: 19em;
+        gap: 0.5em;
+      }
+
       .form-signin {
         width: 100%;
         max-width: 330px;
@@ -31,11 +45,36 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
+
+      .route-active {
+        color: black;
+        font-size: 20px;
+        transition: font-size 1s;
+      }
     `,
   ],
   standalone: true,
   template: `
     <div class="container pt-5">
+      <div class="example-container">
+        <h5>Examples:</h5>
+        <a
+          routerLink=""
+          [routerLinkActive]="['route-active']"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Event Binding Example</a
+        >
+        <a
+          routerLink="/reactive-form-example"
+          [routerLinkActive]="['route-active']"
+          >Reactive Form Example</a
+        >
+        <a
+          routerLink="/template-driven-form-example"
+          [routerLinkActive]="['route-active']"
+          >Template Driven Form Example</a
+        >
+      </div>
       <main class="form-signin">
         <form action="https://demo.turnstile.workers.dev/handler" method="POST">
           <h2 class="h3 mb-3 fw-normal">Turnstile &dash; Dummy Login Demo</h2>
@@ -56,13 +95,9 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
             <label for="pass">Password (dummy)</label>
           </div>
 
-          <div class="checkbox mb-3">
+          <div class="checkbox">
             <!-- The following line controls and configures the Turnstile widget. -->
-            <ngx-turnstile
-              [siteKey]="siteKey"
-              theme="light"
-              (resolved)="onResolved($event)"
-            ></ngx-turnstile>
+            <router-outlet></router-outlet>
             <!-- end. -->
           </div>
           <button class="w-100 btn btn-lg btn-primary" type="submit">
@@ -80,12 +115,6 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       </main>
     </div>
   `,
-  imports: [NgxTurnstileModule],
+  imports: [RouterModule],
 })
-export class AppComponent {
-  siteKey = '1x00000000000000000000AA';
-
-  onResolved(response: string | null) {
-    console.log(response);
-  }
-}
+export class AppComponent {}
