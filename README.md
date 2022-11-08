@@ -1,4 +1,3 @@
-
 # Cloudflare Turnstile Component for Angular
 
 ## ngx-turnstile
@@ -55,9 +54,11 @@ export class MyApp {
 ```
 
 ## Usage with @angular/forms
-Import both NgxTurnstileModule and NgxTurnstileFormsModule modules in your app module. 
+
+Import both NgxTurnstileModule and NgxTurnstileFormsModule modules in your app module.
+
 ```typescript
-import { NgxTurnstileModule, NgxTurnstileFormsModule  } from "ngx-turnstile";
+import { NgxTurnstileModule, NgxTurnstileFormsModule } from "ngx-turnstile";
 ```
 
 Then import either FormsModule or ReactiveFormsModule from @angular/forms depending on the type of form you want to use.
@@ -65,20 +66,22 @@ Then import either FormsModule or ReactiveFormsModule from @angular/forms depend
 You can then use the ngModel, formControl or formControlName directives on the component depending on which module you imported from @angular/forms.
 
 ### Reactive Form Example
+
 ```html
-<ngx-turnstile 
-[siteKey]="siteKey" 
-theme="auto"
-[formControl]="tokenControl"
+<ngx-turnstile
+  [siteKey]="siteKey"
+  theme="auto"
+  [formControl]="tokenControl"
 ></ngx-turnstile>
 ```
 
 ### Template Driven Form Example
+
 ```html
 <ngx-turnstile
-[siteKey]="siteKey"
-theme="light"
-[(ngModel)]="token"
+  [siteKey]="siteKey"
+  theme="light"
+  [(ngModel)]="token"
 ></ngx-turnstile>
 ```
 
