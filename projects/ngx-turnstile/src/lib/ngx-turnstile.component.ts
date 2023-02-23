@@ -102,6 +102,8 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    window.turnstile.remove(this.widgetId);
+    if (this.widgetId) {
+      window.turnstile.remove(this.widgetId);
+    }
   }
 }
