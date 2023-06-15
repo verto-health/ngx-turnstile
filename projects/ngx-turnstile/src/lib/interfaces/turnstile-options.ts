@@ -7,4 +7,5 @@ export interface TurnstileOptions {
   'expired-callback'?: () => void;
   theme?: 'light' | 'dark' | 'auto';
   tabindex?: number;
+  appearance?: 'always' | 'execute' | 'interaction-only';
 }
