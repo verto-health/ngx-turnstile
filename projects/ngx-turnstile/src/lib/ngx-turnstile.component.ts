@@ -42,6 +42,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() theme?: 'light' | 'dark' | 'auto' = 'auto';
   @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
+  @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
 
   @Output() resolved = new EventEmitter<string | null>();
 
@@ -60,13 +61,14 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     throw 'Version not defined in ngx-turnstile component.';
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     let turnstileOptions: TurnstileOptions = {
       sitekey: this.siteKey,
       theme: this.theme,
       tabindex: this.tabIndex,
       action: this.action,
       cData: this.cData,
+      appearance: this.appearance,
       callback: (token: string) => {
         this.zone.run(() => this.resolved.emit(token));
       },
@@ -94,7 +96,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     document.head.appendChild(script);
   }
 
-  reset() {
+  public reset(): void {
     if (this.widgetId) {
       this.resolved.emit(null);
       window.turnstile.reset(this.widgetId);
