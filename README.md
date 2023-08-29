@@ -39,12 +39,7 @@ import { Component } from "@angular/core";
 
 @Component({
   selector: "my-app",
-  template: `<ngx-turnstile
-    [siteKey]="siteKey"
-    (resolved)="sendCaptchaResponse($event)"
-    theme="auto"
-    [tabIndex]="0"
-  ></ngx-turnstile>`,
+  template: `<ngx-turnstile [siteKey]="siteKey" (resolved)="sendCaptchaResponse($event)" theme="auto" [tabIndex]="0"></ngx-turnstile>`,
 })
 export class MyApp {
   sendCaptchaResponse(captchaResponse: string) {
@@ -68,21 +63,13 @@ You can then use the ngModel, formControl or formControlName directives on the c
 ### Reactive Form Example
 
 ```html
-<ngx-turnstile
-  [siteKey]="siteKey"
-  theme="auto"
-  [formControl]="tokenControl"
-></ngx-turnstile>
+<ngx-turnstile [siteKey]="siteKey" theme="auto" [formControl]="tokenControl"></ngx-turnstile>
 ```
 
 ### Template Driven Form Example
 
 ```html
-<ngx-turnstile
-  [siteKey]="siteKey"
-  theme="light"
-  [(ngModel)]="token"
-></ngx-turnstile>
+<ngx-turnstile [siteKey]="siteKey" theme="light" [(ngModel)]="token"></ngx-turnstile>
 ```
 
 The component is read-only, meaning that you should not update the control with a custom value. Updating the control value will reset the component

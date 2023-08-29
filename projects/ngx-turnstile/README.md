@@ -39,12 +39,7 @@ import { Component } from "@angular/core";
 
 @Component({
   selector: "my-app",
-  template: `<ngx-turnstile
-    [siteKey]="siteKey"
-    (resolved)="sendCaptchaResponse($event)"
-    theme="auto"
-    [tabIndex]="0"
-  ></ngx-turnstile>`,
+  template: `<ngx-turnstile [siteKey]="siteKey" (resolved)="sendCaptchaResponse($event)" theme="auto" [tabIndex]="0"></ngx-turnstile>`,
 })
 export class MyApp {
   sendCaptchaResponse(captchaResponse: string) {
