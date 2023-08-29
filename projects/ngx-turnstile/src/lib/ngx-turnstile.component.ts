@@ -16,11 +16,11 @@ declare global {
     turnstile: {
       render: (
         idOrContainer: string | HTMLElement,
-        options: TurnstileOptions
+        options: TurnstileOptions,
       ) => string;
       reset: (widgetIdOrContainer: string | HTMLElement) => void;
       getResponse: (
-        widgetIdOrContainer: string | HTMLElement
+        widgetIdOrContainer: string | HTMLElement,
       ) => string | undefined;
       remove: (widgetIdOrContainer: string | HTMLElement) => void;
     };
@@ -50,7 +50,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   private _getCloudflareTurnstileUrl(): string {
@@ -86,7 +86,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
 
       this.widgetId = window.turnstile.render(
         this.elementRef.nativeElement,
-        turnstileOptions
+        turnstileOptions,
       );
     };
 
