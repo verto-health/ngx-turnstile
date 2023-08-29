@@ -1,0 +1,26 @@
+name: e2e Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  test:
+  runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install yarn packages
+        run: |
+          yarn install
+          yarn add ngx-turnstile
+          npm link @angular/cli
+          ng build ngx-turnstile
+      - uses: cypress-io/github-action@v2
+      - name: Run Cypress for environment
+        with:
+          start: |
+            ng serve ngx-turnstile-demo
+          wait-on: "http://localhost:4200"
+          wait-on-timeout: 300
+          browser: chrome
+          config-file: cypress.config.ts
