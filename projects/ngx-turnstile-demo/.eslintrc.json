@@ -6,8 +6,8 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": [
-          "tsconfig.app.json",
-          "tsconfig.spec.json"
+          "projects/ngx-turnstile-demo/tsconfig.app.json",
+          "projects/ngx-turnstile-demo/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },
