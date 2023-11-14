@@ -27,8 +27,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: |
-            ng serve ngx-turnstile-demo
-          wait-on: "http://localhost:4200"
+            ng serve ngx-turnstile-demo --host 0.0.0.0
+          wait-on: "http://0.0.0.0:4200"
           wait-on-timeout: 300
           browser: chrome
           config-file: cypress.config.ts
