@@ -10,7 +10,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "paths": {
       "ngx-turnstile": ["dist/ngx-turnstile"]
     },
