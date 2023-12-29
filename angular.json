@@ -107,10 +107,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ngx-turnstile-demo:build:production"
+              "buildTarget": "ngx-turnstile-demo:build:production"
             },
             "development": {
-              "browserTarget": "ngx-turnstile-demo:build:development"
+              "buildTarget": "ngx-turnstile-demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -118,7 +118,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-turnstile-demo:build"
+            "buildTarget": "ngx-turnstile-demo:build"
           }
         },
         "test": {

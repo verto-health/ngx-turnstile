@@ -8,5 +8,6 @@
     "inlineSources": true,
     "types": []
   },
-  "exclude": ["src/test.ts", "**/*.spec.ts"]
+  "include": ["src/test.ts", "src/lib/**/*.ts", "src/public-api.ts"],
+  "exclude": ["**/*.spec.ts"]
 }
