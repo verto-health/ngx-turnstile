@@ -3,7 +3,7 @@ export interface TurnstileOptions {
   action?: string;
   cData?: string;
   callback?: (token: string) => void;
-  'error-callback'?: () => void;
+  'error-callback'?: (errorCode: string) => boolean;
   'expired-callback'?: () => void;
   theme?: 'light' | 'dark' | 'auto';
   tabindex?: number;
