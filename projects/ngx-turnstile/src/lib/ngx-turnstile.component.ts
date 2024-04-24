@@ -45,6 +45,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
 
   @Output() resolved = new EventEmitter<string | null>();
+  @Output() errored = new EventEmitter<string | null>();
 
   private widgetId!: string;
 
@@ -71,6 +72,11 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
       appearance: this.appearance,
       callback: (token: string) => {
         this.zone.run(() => this.resolved.emit(token));
+      },
+      'error-callback': (errorCode: string): boolean => {
+        this.zone.run(() => this.errored.emit(errorCode));
+        // Returning false causes Turnstile to log error code as a console warning.
+        return false;
       },
       'expired-callback': () => {
         this.zone.run(() => this.reset());

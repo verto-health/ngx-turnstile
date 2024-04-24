@@ -10,6 +10,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         [siteKey]="siteKey"
         theme="light"
         (resolved)="onResolved($event)"
+        (errored)="onErrored($event)"
       ></ngx-turnstile>
     </ng-container>
   `,
@@ -19,6 +20,10 @@ export class EventBindingExampleComponent {
   siteKey = '1x00000000000000000000AA';
 
   onResolved(response: string | null) {
-    console.log(response);
+    console.log('onResolved', response);
+  }
+
+  onErrored(errorCode: string | null) {
+    console.log('onErrored', errorCode);
   }
 }
