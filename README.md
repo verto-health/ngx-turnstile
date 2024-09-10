@@ -1,3 +1,5 @@
+Some changes for the project
+
 # Cloudflare Turnstile Component for Angular
 
 ## ngx-turnstile
