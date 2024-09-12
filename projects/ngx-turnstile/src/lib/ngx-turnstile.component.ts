@@ -43,6 +43,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() action?: string;
   @Input() cData?: string;
   @Input() theme?: 'light' | 'dark' | 'auto' = 'auto';
+  @Input() language?: string = 'auto';
   @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
   @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
@@ -70,6 +71,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     let turnstileOptions: TurnstileOptions = {
       sitekey: this.siteKey,
       theme: this.theme,
+      language: this.language,
       tabindex: this.tabIndex,
       action: this.action,
       cData: this.cData,
