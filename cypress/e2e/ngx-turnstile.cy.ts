@@ -31,4 +31,18 @@ describe('tests the ngx-turnstile library', () => {
       '[Cloudflare Turnstile] Turnstile already has been loaded. Was Turnstile imported multiple times?.',
     );
   });
+
+  it('Passes Language Option Example', () => {
+    cy.visit(Cypress.env('languageOptionUrl'));
+    cy.wait(3000);
+    cy.get('ngx-turnstile').should('have.attr', 'ng-reflect-language', 'FR');
+
+    // checks the iframe src attribute to make sure the language option was sent to cloudflare correctly
+    cy.get('ngx-turnstile div')
+      .shadow()
+      .find('iframe')
+      .then(($iframe) => {
+        cy.wrap($iframe).should('have.attr', 'src').and('include', 'FR');
+      });
+  });
 });
