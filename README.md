@@ -1,3 +1,5 @@
+new line
+
 # Cloudflare Turnstile Component for Angular
 
 ## ngx-turnstile
