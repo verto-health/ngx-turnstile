@@ -59,7 +59,7 @@ export class NgxTurnstileComponent implements OnDestroy {
     private zone: NgZone,
     @Inject(DOCUMENT) private document: Document,
   ) {
-    afterNextRender(this.createWidget.bind(this));
+    afterNextRender(() => this.createWidget());
   }
 
   private _getCloudflareTurnstileUrl(): string {
