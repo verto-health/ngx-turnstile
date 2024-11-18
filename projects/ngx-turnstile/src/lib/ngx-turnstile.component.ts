@@ -72,6 +72,7 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
       cData: this.cData,
       appearance: this.appearance,
       retry: this.retry,
+      size: this.size,
       callback: (token: string) => {
         this.zone.run(() => this.resolved.emit(token));
       },
