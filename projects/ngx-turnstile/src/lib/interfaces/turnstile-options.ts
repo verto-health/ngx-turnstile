@@ -8,4 +8,6 @@ export interface TurnstileOptions {
   theme?: 'light' | 'dark' | 'auto';
   tabindex?: number;
   appearance?: 'always' | 'execute' | 'interaction-only';
+  retry?: 'never' | 'auto';
+  size?: 'normal' | 'flexible' | 'compact';
 }

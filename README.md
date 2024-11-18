@@ -83,6 +83,8 @@ The component supports these options as input:
 - `cData`
 - `theme`
 - `tabIndex`
+- `retry`
+- `size`
 
 These options are well documented in the [Cloudflare Docs](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/#configurations). The letter cases are adapted to camelCase to facilitate easy migration from `ng-recaptcha`.
 

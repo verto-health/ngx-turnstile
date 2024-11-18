@@ -9,6 +9,8 @@ import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
     ><ngx-turnstile
       [siteKey]="siteKey"
       theme="light"
+      retry="never"
+      size="compact"
       [(ngModel)]="token"
     ></ngx-turnstile>
 
