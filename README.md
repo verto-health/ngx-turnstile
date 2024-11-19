@@ -91,6 +91,7 @@ These options are well documented in the [Cloudflare Docs](https://developers.cl
 ### Events
 
 - `resolved(response: string)`. Occurs when the CAPTCHA resolution value changed.
+- `errored(errorCode: string)`. Occurs when the CAPTCHA widget returned an [error code](https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/#error-codes).
 
 ### Example
 

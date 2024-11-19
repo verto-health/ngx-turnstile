@@ -7,7 +7,10 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  Inject,
+  afterNextRender,
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { TurnstileOptions } from './interfaces/turnstile-options';
 
 declare global {
@@ -27,6 +30,7 @@ declare global {
   }
 }
 
+const SCRIPT_ID = 'ngx-turnstile';
 const CALLBACK_NAME = 'onloadTurnstileCallback';
 type SupportedVersion = '0';
 
@@ -35,11 +39,12 @@ type SupportedVersion = '0';
   template: ``,
   exportAs: 'ngx-turnstile',
 })
-export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
+export class NgxTurnstileComponent implements OnDestroy {
   @Input() siteKey!: string;
   @Input() action?: string;
   @Input() cData?: string;
   @Input() theme?: 'light' | 'dark' | 'auto' = 'auto';
+  @Input() language?: string = 'auto';
   @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
   @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
@@ -47,13 +52,17 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
   @Input() size?: 'normal' | 'flexible' | 'compact' = 'normal';
 
   @Output() resolved = new EventEmitter<string | null>();
+  @Output() errored = new EventEmitter<string | null>();
 
   private widgetId!: string;
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private zone: NgZone,
-  ) {}
+    @Inject(DOCUMENT) private document: Document,
+  ) {
+    afterNextRender(() => this.createWidget());
+  }
 
   private _getCloudflareTurnstileUrl(): string {
     if (this.version === '0') {
@@ -63,10 +72,11 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     throw 'Version not defined in ngx-turnstile component.';
   }
 
-  public ngAfterViewInit(): void {
+  public createWidget(): void {
     let turnstileOptions: TurnstileOptions = {
       sitekey: this.siteKey,
       theme: this.theme,
+      language: this.language,
       tabindex: this.tabIndex,
       action: this.action,
       cData: this.cData,
@@ -76,12 +86,15 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
       callback: (token: string) => {
         this.zone.run(() => this.resolved.emit(token));
       },
+      'error-callback': (errorCode: string): boolean => {
+        this.zone.run(() => this.errored.emit(errorCode));
+        // Returning false causes Turnstile to log error code as a console warning.
+        return false;
+      },
       'expired-callback': () => {
         this.zone.run(() => this.reset());
       },
     };
-
-    const script = document.createElement('script');
 
     window[CALLBACK_NAME] = () => {
       if (!this.elementRef?.nativeElement) {
@@ -94,10 +107,17 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
       );
     };
 
+    if (this.scriptLoaded()) {
+      window[CALLBACK_NAME]();
+      return;
+    }
+
+    const script = this.document.createElement('script');
     script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
+    script.id = SCRIPT_ID;
     script.async = true;
     script.defer = true;
-    document.head.appendChild(script);
+    this.document.head.appendChild(script);
   }
 
   public reset(): void {
@@ -111,5 +131,9 @@ export class NgxTurnstileComponent implements AfterViewInit, OnDestroy {
     if (this.widgetId) {
       window.turnstile.remove(this.widgetId);
     }
+  }
+
+  public scriptLoaded(): boolean {
+    return !!this.document.getElementById(SCRIPT_ID);
   }
 }

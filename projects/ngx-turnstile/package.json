@@ -1,7 +1,7 @@
 {
   "name": "ngx-turnstile",
   "description": "Angular component for Cloudflare Turnstile",
-  "version": "0.2.0",
+  "version": "0.2.4",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,8 +16,8 @@
     "cloudflare-turnstile"
   ],
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0"
+    "@angular/common": ">=16.0.0",
+    "@angular/core": ">=16.0.0"
   },
   "dependencies": {
     "tslib": "^2.5.2"

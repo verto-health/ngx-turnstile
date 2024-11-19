@@ -9,21 +9,13 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       <ngx-turnstile
         [siteKey]="siteKey"
         theme="light"
-        (resolved)="onResolved($event)"
-        (errored)="onErrored($event)"
+        [language]="language"
       ></ngx-turnstile>
     </ng-container>
   `,
   imports: [NgxTurnstileModule],
 })
-export class EventBindingExampleComponent {
+export class LanguageOptionComponent {
   siteKey = '1x00000000000000000000AA';
-
-  onResolved(response: string | null) {
-    console.log('onResolved', response);
-  }
-
-  onErrored(errorCode: string | null) {
-    console.log('onErrored', errorCode);
-  }
+  language = 'FR';
 }
