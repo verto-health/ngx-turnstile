@@ -48,6 +48,8 @@ export class NgxTurnstileComponent implements OnDestroy {
   @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
   @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
+  @Input() retry?: 'never' | 'auto' = 'auto';
+  @Input() size?: 'normal' | 'flexible' | 'compact' = 'normal';
 
   @Output() resolved = new EventEmitter<string | null>();
   @Output() errored = new EventEmitter<string | null>();
@@ -79,6 +81,8 @@ export class NgxTurnstileComponent implements OnDestroy {
       action: this.action,
       cData: this.cData,
       appearance: this.appearance,
+      retry: this.retry,
+      size: this.size,
       callback: (token: string) => {
         this.zone.run(() => this.resolved.emit(token));
       },
