@@ -9,4 +9,6 @@ export interface TurnstileOptions {
   language?: string;
   tabindex?: number;
   appearance?: 'always' | 'execute' | 'interaction-only';
+  retry?: 'never' | 'auto';
+  size?: 'normal' | 'flexible' | 'compact';
 }
