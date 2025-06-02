@@ -3,6 +3,7 @@ import { EventBindingExampleComponent } from './examples/event-binding/event-bin
 import { ReactiveFormExampleComponent } from './examples/reactive-form/reactive-form-example.component';
 import { TemplateDrivenFormExampleComponent } from './examples/template-driven-form/template-driven-form-example.component';
 import { LanguageOptionComponent } from './examples/language-option/language-option.component';
+import { DifferentSizeComponent } from './examples/different-size/different-size.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -26,4 +27,9 @@ export const APP_ROUTES: Routes = [
     component: TemplateDrivenFormExampleComponent,
     title: 'Template Driven Form Example',
   },
+  {
+    path: 'different-widget-size-example',
+    component: DifferentSizeComponent,
+    title: 'Different Widget Size Example',
+  }
 ];

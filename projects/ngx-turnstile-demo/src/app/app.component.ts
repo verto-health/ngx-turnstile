@@ -80,6 +80,13 @@ import { RouterModule } from '@angular/router';
           [routerLinkActive]="['route-active']"
           >Language Option Example</a
         >
+
+        <a
+          routerLink="/different-widget-size-example"
+          [routerLinkActive]="['route-active']"
+          >Different Widget Size Example</a
+        >
+        
       </div>
       <main class="form-signin">
         <form action="https://demo.turnstile.workers.dev/handler" method="POST">
