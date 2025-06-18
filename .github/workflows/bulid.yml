@@ -2,7 +2,7 @@ name: Build ngx-turnstile
 on: [push]
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
