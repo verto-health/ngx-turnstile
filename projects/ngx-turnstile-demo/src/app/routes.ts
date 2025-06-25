@@ -31,5 +31,5 @@ export const APP_ROUTES: Routes = [
     path: 'different-widget-size-example',
     component: DifferentSizeComponent,
     title: 'Different Widget Size Example',
-  }
+  },
 ];

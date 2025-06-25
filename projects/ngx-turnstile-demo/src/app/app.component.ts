@@ -86,7 +86,6 @@ import { RouterModule } from '@angular/router';
           [routerLinkActive]="['route-active']"
           >Different Widget Size Example</a
         >
-        
       </div>
       <main class="form-signin">
         <form action="https://demo.turnstile.workers.dev/handler" method="POST">
