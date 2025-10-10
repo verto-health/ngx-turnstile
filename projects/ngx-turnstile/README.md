@@ -56,13 +56,28 @@ The component supports these options as input:
 - `action`
 - `cData`
 - `theme`
+- `language`
 - `tabIndex`
+- `appearance`
+- `retry`
+- `retryInterval`
+- `size`
+- `refreshExpired`
+- `refreshTimeout`
+- `execution`
+- `feedbackEnabled`
 
 These options are well documented in the [Cloudflare Docs](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/#configurations). The letter cases are adapted to camelCase to facilitate easy migration from `ng-recaptcha`.
 
 ### Events
 
-- `resolved(response: string)`. Occurs when the CAPTCHA resolution value changed.
+- `resolved(response: string)`. Occurs upon success of the challenge. The callback is passed a token that can be validated. eg. `callback`
+- `errored(response: string)`. Occurs when there is an error (e.g. network error or the challenge failed). Refer to [Client-side errors](https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/#error-codes). eg. `error-callback`
+- `expired(response: string)`. Occurs when the token expires and does not reset the widget. eg. `expired-callback`
+- `timedOut()`. Occurs when the challenge presents an interactive challenge but was not solved within a given time. eg. `timeout-callback`
+- `beforeInteractive()`. Occurs before the challenge enters interactive mode. eg. `before-interactive-callback`
+- `afterInteractive()`. Occurs when challenge has left interactive mode. eg. `after-interactive-callback`
+- `unsupported()`. Occurs when a given client/browser is not supported by Turnstile. eg. `unsupported-callback`
 
 ### Example
 
