@@ -224,7 +224,7 @@ export class NgxTurnstileComponent implements OnChanges, OnDestroy {
       'expired-callback': (token: string) => {
         this.zone.run(() => {
           this.expired.emit(token)
-          this.reset();
+          if (this.refreshExpired === 'auto') { this.reset(); }
         });
       },
       'timeout-callback': () => {

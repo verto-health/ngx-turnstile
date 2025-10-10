@@ -3,8 +3,8 @@ export interface TurnstileOptions {
   action?: string;
   cData?: string;
   callback?: (token: string) => void;
-  'expired-callback'?: (token: string) => void;
   'error-callback'?: (errorCode: string) => boolean;
+  'expired-callback'?: (token: string) => void;
   'timeout-callback'?: () => void;
 	'before-interactive-callback'?: () => void;
 	'after-interactive-callback'?: () => void;
