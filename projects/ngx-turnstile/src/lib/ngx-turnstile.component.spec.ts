@@ -8,7 +8,7 @@ describe('NgxTurnstileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NgxTurnstileComponent],
+      imports: [NgxTurnstileComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NgxTurnstileComponent);
