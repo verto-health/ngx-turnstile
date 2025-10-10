@@ -11,6 +11,11 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         theme="light"
         (resolved)="onResolved($event)"
         (errored)="onErrored($event)"
+        (expired)="onExpired($event)"
+        (timedOut)="onTimeout($event)"
+        (beforeInteractive)="beforeInteractive($event)"
+        (afterInteractive)="afterInteractive($event)"
+        (onUnsupported)="onUnsupported($event)"
       ></ngx-turnstile>
     </ng-container>
   `,
@@ -19,11 +24,31 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
 export class EventBindingExampleComponent {
   siteKey = '1x00000000000000000000AA';
 
-  onResolved(response: string | null) {
-    console.log('onResolved', response);
+  onResolved(token: string | null) {
+    console.log('onResolved', token);
   }
 
   onErrored(errorCode: string | null) {
     console.log('onErrored', errorCode);
+  }
+
+  onExpired(token: string | null) {
+    console.log('onExpired', token);
+  }
+
+  onTimeout() {
+    console.log('onTimeout');
+  }
+
+  beforeInteractive() {
+    console.log('beforeInteractive');
+  }
+
+  afterInteractive() {
+    console.log('afterInteractive');
+  }
+
+  onUnsupported() {
+    console.log('onUnsupported');
   }
 }
