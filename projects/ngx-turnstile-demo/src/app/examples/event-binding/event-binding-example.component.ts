@@ -12,10 +12,10 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         (resolved)="onResolved($event)"
         (errored)="onErrored($event)"
         (expired)="onExpired($event)"
-        (timedOut)="onTimeout($event)"
-        (beforeInteractive)="beforeInteractive($event)"
-        (afterInteractive)="afterInteractive($event)"
-        (onUnsupported)="onUnsupported($event)"
+        (timedOut)="onTimeout()"
+        (beforeInteractive)="beforeInteractive()"
+        (afterInteractive)="afterInteractive()"
+        (onUnsupported)="onUnsupported()"
       ></ngx-turnstile>
     </ng-container>
   `,
