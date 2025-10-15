@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { NgxTurnstileComponent } from './ngx-turnstile.component';
 
 @NgModule({
-  declarations: [NgxTurnstileComponent],
-  imports: [],
+  imports: [NgxTurnstileComponent],
   exports: [NgxTurnstileComponent],
 })
 export class NgxTurnstileModule {}
