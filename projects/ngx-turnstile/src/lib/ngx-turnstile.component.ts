@@ -12,13 +12,22 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { AppearanceMode, ExecutionMode, FailureRetryMode, RefreshExpiredMode, RefreshTimeoutMode, Theme, TurnstileOptions, WidgetSize } from './interfaces/turnstile-options';
+import {
+  AppearanceMode,
+  ExecutionMode,
+  FailureRetryMode,
+  RefreshExpiredMode,
+  RefreshTimeoutMode,
+  Theme,
+  TurnstileOptions,
+  WidgetSize,
+} from './interfaces/turnstile-options';
 import { Turnstile } from './interfaces/turnstile';
 
 declare global {
   interface Window {
     [CALLBACK_NAME]: () => void;
-    turnstile: Turnstile
+    turnstile: Turnstile;
   }
 }
 
@@ -30,7 +39,7 @@ type SupportedVersion = '0';
   selector: 'ngx-turnstile',
   template: ``,
   exportAs: 'ngx-turnstile',
-  standalone: true
+  standalone: true,
 })
 export class NgxTurnstileComponent implements OnChanges, OnDestroy {
   /**
@@ -187,8 +196,24 @@ export class NgxTurnstileComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     // Remove and re-render the widget if any input values change
-    const inputFields = ['siteKey','action','cData','theme','language','version','tabIndex','appearance','retry','retryInterval','size','refreshExpired','refreshTimeout','execution','feedbackEnabled'];
-    if (Object.keys(changes).find(key => inputFields.includes(key))) {
+    const inputFields = [
+      'siteKey',
+      'action',
+      'cData',
+      'theme',
+      'language',
+      'version',
+      'tabIndex',
+      'appearance',
+      'retry',
+      'retryInterval',
+      'size',
+      'refreshExpired',
+      'refreshTimeout',
+      'execution',
+      'feedbackEnabled',
+    ];
+    if (Object.keys(changes).find((key) => inputFields.includes(key))) {
       this.remove();
       this.createWidget();
     }
@@ -223,8 +248,10 @@ export class NgxTurnstileComponent implements OnChanges, OnDestroy {
       },
       'expired-callback': (token: string) => {
         this.zone.run(() => {
-          this.expired.emit(token)
-          if (this.refreshExpired === 'auto') { this.reset(); }
+          this.expired.emit(token);
+          if (this.refreshExpired === 'auto') {
+            this.reset();
+          }
         });
       },
       'timeout-callback': () => {
@@ -238,7 +265,7 @@ export class NgxTurnstileComponent implements OnChanges, OnDestroy {
       },
       'unsupported-callback': () => {
         this.zone.run(() => this.unsupported.emit());
-      }
+      },
     };
 
     window[CALLBACK_NAME] = () => {
