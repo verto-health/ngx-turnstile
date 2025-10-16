@@ -6,9 +6,9 @@ export interface TurnstileOptions {
   'error-callback'?: (errorCode: string) => boolean;
   'expired-callback'?: (token: string) => void;
   'timeout-callback'?: () => void;
-	'before-interactive-callback'?: () => void;
-	'after-interactive-callback'?: () => void;
-	'unsupported-callback'?: () => void;
+  'before-interactive-callback'?: () => void;
+  'after-interactive-callback'?: () => void;
+  'unsupported-callback'?: () => void;
   theme?: Theme;
   language?: string;
   tabindex?: number;
