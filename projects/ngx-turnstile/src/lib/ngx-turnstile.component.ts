@@ -1,6 +1,5 @@
 import {
   Component,
-  AfterViewInit,
   ElementRef,
   Input,
   NgZone,
@@ -9,7 +8,10 @@ import {
   OnDestroy,
   Inject,
   afterNextRender,
+  signal,
+  computed,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { DOCUMENT } from '@angular/common';
 import { TurnstileOptions } from './interfaces/turnstile-options';
 
@@ -38,7 +40,7 @@ type SupportedVersion = '0';
   selector: 'ngx-turnstile',
   template: ``,
   exportAs: 'ngx-turnstile',
-  standalone: true
+  standalone: true,
 })
 export class NgxTurnstileComponent implements OnDestroy {
   @Input() siteKey!: string;
@@ -55,14 +57,28 @@ export class NgxTurnstileComponent implements OnDestroy {
   @Output() resolved = new EventEmitter<string | null>();
   @Output() errored = new EventEmitter<string | null>();
 
-  private widgetId!: string;
+  private widgetId = signal<string | null | undefined>(undefined);
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     @Inject(DOCUMENT) private document: Document,
   ) {
-    afterNextRender(() => this.createWidget());
+    this.loadScript();
+
+    // Create the widget after the element is rendered (assuming the script is loaded)
+    afterNextRender(() => {
+      if (this.scriptLoaded() && !this.widgetLoaded()) {
+        this.createWidget();
+      }
+    });
+
+    // Create the widget after the script is loaded (assuming it has not been created already)
+    toObservable(this.scriptLoaded).subscribe((scriptLoaded) => {
+      if (scriptLoaded && !this.widgetLoaded()) {
+        this.createWidget();
+      }
+    });
   }
 
   private _getCloudflareTurnstileUrl(): string {
@@ -71,6 +87,22 @@ export class NgxTurnstileComponent implements OnDestroy {
     }
 
     throw 'Version not defined in ngx-turnstile component.';
+  }
+
+  private loadScript(): void {
+    window[CALLBACK_NAME] = () =>
+      this.zone.run(() => this.scriptLoaded.set(true));
+
+    this.scriptLoaded.set(!!window.turnstile);
+    const scriptPending = !!this.document.getElementById(SCRIPT_ID);
+    if (!this.scriptLoaded() && !scriptPending) {
+      const script = this.document.createElement('script');
+      script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
+      script.id = SCRIPT_ID;
+      script.async = true;
+      script.defer = true;
+      this.document.head.appendChild(script);
+    }
   }
 
   public createWidget(): void {
@@ -97,44 +129,47 @@ export class NgxTurnstileComponent implements OnDestroy {
       },
     };
 
-    window[CALLBACK_NAME] = () => {
+    const render = () => {
+      // Stop if the element does not exist yet
       if (!this.elementRef?.nativeElement) {
         return;
       }
 
-      this.widgetId = window.turnstile.render(
+      // Remove any active widget so we can create a new one
+      this.remove();
+
+      // Render the Turnstile widget
+      const widgetId = window.turnstile.render(
         this.elementRef.nativeElement,
         turnstileOptions,
       );
+      this.widgetId.set(widgetId);
     };
 
     if (this.scriptLoaded()) {
-      window[CALLBACK_NAME]();
-      return;
+      render();
     }
-
-    const script = this.document.createElement('script');
-    script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
-    script.id = SCRIPT_ID;
-    script.async = true;
-    script.defer = true;
-    this.document.head.appendChild(script);
   }
 
   public reset(): void {
-    if (this.widgetId) {
+    if (this.widgetLoaded()) {
       this.resolved.emit(null);
-      window.turnstile.reset(this.widgetId);
+      window.turnstile.reset(this.widgetId()!);
+    }
+  }
+
+  public remove(): void {
+    if (this.widgetLoaded()) {
+      window.turnstile.remove(this.widgetId()!);
+      this.widgetId.set(undefined);
     }
   }
 
   public ngOnDestroy(): void {
-    if (this.widgetId) {
-      window.turnstile.remove(this.widgetId);
-    }
+    this.remove();
   }
 
-  public scriptLoaded(): boolean {
-    return !!this.document.getElementById(SCRIPT_ID);
-  }
+  public scriptLoaded = signal(false);
+
+  public widgetLoaded = computed(() => !!this.widgetId());
 }
