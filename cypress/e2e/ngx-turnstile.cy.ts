@@ -56,4 +56,55 @@ describe('tests the ngx-turnstile library', () => {
       cy.wrap($widget).find('div').shadow().find('iframe').should('exist');
     });
   });
+
+  // toggles a conditionally-rendered widget on/off (the repro from issue #49)
+  // and makes sure it renders without the "reading 'render'" TypeError
+  it('Passes Conditionally Rendered Widget Example', () => {
+    const renderErrors: string[] = [];
+    cy.on('uncaught:exception', (err) => {
+      renderErrors.push(err.message);
+      return false;
+    });
+
+    cy.visit(Cypress.env('multiWidgetUrl'), {
+      onBeforeLoad(win) {
+        cy.stub(win.console, 'error').callsFake((...args: unknown[]) => {
+          renderErrors.push(args.map(String).join(' '));
+        });
+      },
+    });
+    cy.wait(3000);
+
+    // Mount, unmount, and re-mount the conditional widget.
+    cy.get('[data-cy="toggle-conditional-widget"]').check();
+    cy.wait(2000);
+    cy.get('ngx-turnstile').should('have.length', 3);
+    cy.get('ngx-turnstile')
+      .last()
+      .find('div')
+      .shadow()
+      .find('iframe')
+      .should('exist');
+
+    cy.get('[data-cy="toggle-conditional-widget"]').uncheck();
+    cy.get('ngx-turnstile').should('have.length', 2);
+
+    cy.get('[data-cy="toggle-conditional-widget"]').check();
+    cy.wait(2000);
+    cy.get('ngx-turnstile').should('have.length', 3);
+    cy.get('ngx-turnstile')
+      .last()
+      .find('div')
+      .shadow()
+      .find('iframe')
+      .should('exist');
+
+    cy.then(() => {
+      const rendererrs = renderErrors.filter((e) => /reading 'render'/.test(e));
+      expect(
+        rendererrs,
+        `no "reading 'render'" TypeError (issue #49)`,
+      ).to.have.length(0);
+    });
+  });
 });
