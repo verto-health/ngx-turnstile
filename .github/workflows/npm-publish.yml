@@ -15,14 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20.x
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
           registry-url: "https://registry.npmjs.org"
 
-      # Trusted Publishing requires npm >= 11.5.1 (the version bundled with
-      # Node 20 is older), so upgrade the CLI before publishing.
+      # Trusted Publishing requires npm >= 11.5.1 (newer than the version
+      # bundled with Node), so upgrade the CLI before publishing.
       - name: Upgrade npm
         run: npm install -g npm@latest
 
