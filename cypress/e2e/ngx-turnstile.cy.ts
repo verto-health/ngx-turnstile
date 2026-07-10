@@ -45,4 +45,15 @@ describe('tests the ngx-turnstile library', () => {
         cy.wrap($iframe).should('have.attr', 'src').and('include', 'FR');
       });
   });
+
+  // visits a page with two widgets and makes sure BOTH render (regression test
+  // for the callback-overwrite bug where only the last-created widget rendered)
+  it('Passes Multiple Widgets Example', () => {
+    cy.visit(Cypress.env('multiWidgetUrl'));
+    cy.wait(3000);
+    cy.get('ngx-turnstile').should('have.length', 2);
+    cy.get('ngx-turnstile').each(($widget) => {
+      cy.wrap($widget).find('div').shadow().find('iframe').should('exist');
+    });
+  });
 });

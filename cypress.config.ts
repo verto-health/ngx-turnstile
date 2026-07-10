@@ -13,6 +13,7 @@ export default defineConfig({
     reactiveFormUrl: 'http://0.0.0.0:4200/reactive-form-example',
     templateDrivenFormUrl: 'http://0.0.0.0:4200/template-driven-form-example',
     languageOptionUrl: 'http://0.0.0.0:4200/language-option-example',
+    multiWidgetUrl: 'http://0.0.0.0:4200/multi-widget-example',
   },
   e2e: {
     setupNodeEvents(on, config) {
