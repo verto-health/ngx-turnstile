@@ -1,6 +1,5 @@
 import {
   Component,
-  AfterViewInit,
   ElementRef,
   Input,
   NgZone,
@@ -8,9 +7,13 @@ import {
   EventEmitter,
   OnDestroy,
   Inject,
+  PLATFORM_ID,
   afterNextRender,
+  signal,
+  computed,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TurnstileOptions } from './interfaces/turnstile-options';
 
 declare global {
@@ -34,6 +37,11 @@ const SCRIPT_ID = 'ngx-turnstile';
 const CALLBACK_NAME = 'onloadTurnstileCallback';
 type SupportedVersion = '0';
 
+// Every mounted component waiting for the Turnstile script to finish loading.
+// A single global onload callback notifies all of them, so multiple widgets on
+// the same page each get rendered (not just the last one that was created).
+const scriptLoadListeners = new Set<() => void>();
+
 @Component({
   selector: 'ngx-turnstile',
   template: ``,
@@ -55,14 +63,45 @@ export class NgxTurnstileComponent implements OnDestroy {
   @Output() resolved = new EventEmitter<string | null>();
   @Output() errored = new EventEmitter<string | null>();
 
-  private widgetId!: string;
+  private widgetId = signal<string | null | undefined>(undefined);
+
+  /** Whether the Cloudflare Turnstile script has finished loading. */
+  public scriptLoaded = signal(false);
+
+  /** Whether a widget is currently rendered. Clients can watch this signal. */
+  public widgetLoaded = computed(() => !!this.widgetId());
+
+  // Notifies this instance when the shared script finishes loading. Kept as a
+  // stable reference so it can be removed from the listener set on destroy.
+  private onScriptLoad = (): void =>
+    this.zone.run(() => this.scriptLoaded.set(true));
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    afterNextRender(() => this.createWidget());
+    // Touching `window` is only safe in the browser (skip during SSR).
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadScript();
+    }
+
+    // Render once the host element exists (if the script is already loaded).
+    afterNextRender(() => {
+      if (this.scriptLoaded() && !this.widgetLoaded()) {
+        this.createWidget();
+      }
+    });
+
+    // Render once the script finishes loading (if not already rendered).
+    toObservable(this.scriptLoaded)
+      .pipe(takeUntilDestroyed())
+      .subscribe((scriptLoaded) => {
+        if (scriptLoaded && !this.widgetLoaded()) {
+          this.createWidget();
+        }
+      });
   }
 
   private _getCloudflareTurnstileUrl(): string {
@@ -73,8 +112,43 @@ export class NgxTurnstileComponent implements OnDestroy {
     throw 'Version not defined in ngx-turnstile component.';
   }
 
+  private loadScript(): void {
+    // Script already present (e.g. loaded by another widget or a prior route).
+    if (window.turnstile) {
+      this.scriptLoaded.set(true);
+      return;
+    }
+
+    // Register to be notified when the shared script finishes loading.
+    scriptLoadListeners.add(this.onScriptLoad);
+
+    // A single global callback fans out to every waiting instance.
+    window[CALLBACK_NAME] = () => {
+      // Copy then clear so a listener re-registering mid-notification is safe.
+      const listeners = Array.from(scriptLoadListeners);
+      scriptLoadListeners.clear();
+      listeners.forEach((listener) => listener());
+    };
+
+    // Only inject the script once, even with several widgets on the page.
+    const scriptPending = !!this.document.getElementById(SCRIPT_ID);
+    if (!scriptPending) {
+      const script = this.document.createElement('script');
+      script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
+      script.id = SCRIPT_ID;
+      script.async = true;
+      script.defer = true;
+      this.document.head.appendChild(script);
+    }
+  }
+
   public createWidget(): void {
-    let turnstileOptions: TurnstileOptions = {
+    // Only render once the script is loaded and the host element exists.
+    if (!this.scriptLoaded() || !this.elementRef?.nativeElement) {
+      return;
+    }
+
+    const turnstileOptions: TurnstileOptions = {
       sitekey: this.siteKey,
       theme: this.theme,
       language: this.language,
@@ -97,44 +171,30 @@ export class NgxTurnstileComponent implements OnDestroy {
       },
     };
 
-    window[CALLBACK_NAME] = () => {
-      if (!this.elementRef?.nativeElement) {
-        return;
-      }
+    // Remove any existing widget so re-rendering doesn't create duplicates.
+    this.remove();
 
-      this.widgetId = window.turnstile.render(
-        this.elementRef.nativeElement,
-        turnstileOptions,
-      );
-    };
-
-    if (this.scriptLoaded()) {
-      window[CALLBACK_NAME]();
-      return;
-    }
-
-    const script = this.document.createElement('script');
-    script.src = `${this._getCloudflareTurnstileUrl()}?render=explicit&onload=${CALLBACK_NAME}`;
-    script.id = SCRIPT_ID;
-    script.async = true;
-    script.defer = true;
-    this.document.head.appendChild(script);
+    this.widgetId.set(
+      window.turnstile.render(this.elementRef.nativeElement, turnstileOptions),
+    );
   }
 
   public reset(): void {
-    if (this.widgetId) {
+    if (this.widgetLoaded()) {
       this.resolved.emit(null);
-      window.turnstile.reset(this.widgetId);
+      window.turnstile.reset(this.widgetId()!);
+    }
+  }
+
+  public remove(): void {
+    if (this.widgetLoaded()) {
+      window.turnstile.remove(this.widgetId()!);
+      this.widgetId.set(undefined);
     }
   }
 
   public ngOnDestroy(): void {
-    if (this.widgetId) {
-      window.turnstile.remove(this.widgetId);
-    }
-  }
-
-  public scriptLoaded(): boolean {
-    return !!this.document.getElementById(SCRIPT_ID);
+    scriptLoadListeners.delete(this.onScriptLoad);
+    this.remove();
   }
 }

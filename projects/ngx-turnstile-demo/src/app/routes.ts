@@ -4,6 +4,7 @@ import { ReactiveFormExampleComponent } from './examples/reactive-form/reactive-
 import { TemplateDrivenFormExampleComponent } from './examples/template-driven-form/template-driven-form-example.component';
 import { LanguageOptionComponent } from './examples/language-option/language-option.component';
 import { DifferentSizeComponent } from './examples/different-size/different-size.component';
+import { MultiWidgetComponent } from './examples/multi-widget/multi-widget.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -31,5 +32,10 @@ export const APP_ROUTES: Routes = [
     path: 'different-widget-size-example',
     component: DifferentSizeComponent,
     title: 'Different Widget Size Example',
+  },
+  {
+    path: 'multi-widget-example',
+    component: MultiWidgetComponent,
+    title: 'Multiple Widgets Example',
   },
 ];
