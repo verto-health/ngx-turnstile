@@ -46,8 +46,9 @@ describe('tests the ngx-turnstile library', () => {
       });
   });
 
-  // visits a page with two widgets and makes sure BOTH render (regression test
-  // for the callback-overwrite bug where only the last-created widget rendered)
+  // the page mounts a normal widget and a conditional one together on load;
+  // makes sure BOTH render (regression test for the callback-overwrite bug
+  // where only the last-created widget rendered)
   it('Passes Multiple Widgets Example', () => {
     cy.visit(Cypress.env('multiWidgetUrl'));
     cy.wait(3000);
@@ -57,8 +58,8 @@ describe('tests the ngx-turnstile library', () => {
     });
   });
 
-  // toggles a conditionally-rendered widget on/off (the repro from issue #49)
-  // and makes sure it renders without the "reading 'render'" TypeError
+  // toggles the conditionally-rendered widget off then on (the repro from
+  // issue #49) and makes sure it renders without the "reading 'render'" TypeError
   it('Passes Conditionally Rendered Widget Example', () => {
     const renderErrors: string[] = [];
     cy.on('uncaught:exception', (err) => {
@@ -75,23 +76,17 @@ describe('tests the ngx-turnstile library', () => {
     });
     cy.wait(3000);
 
-    // Mount, unmount, and re-mount the conditional widget.
-    cy.get('[data-cy="toggle-conditional-widget"]').check();
-    cy.wait(2000);
-    cy.get('ngx-turnstile').should('have.length', 3);
-    cy.get('ngx-turnstile')
-      .last()
-      .find('div')
-      .shadow()
-      .find('iframe')
-      .should('exist');
-
-    cy.get('[data-cy="toggle-conditional-widget"]').uncheck();
+    // Starts shown: normal widget + conditional widget.
     cy.get('ngx-turnstile').should('have.length', 2);
 
+    // Unmount the conditional widget.
+    cy.get('[data-cy="toggle-conditional-widget"]').uncheck();
+    cy.get('ngx-turnstile').should('have.length', 1);
+
+    // Re-mount it and make sure it renders again.
     cy.get('[data-cy="toggle-conditional-widget"]').check();
     cy.wait(2000);
-    cy.get('ngx-turnstile').should('have.length', 3);
+    cy.get('ngx-turnstile').should('have.length', 2);
     cy.get('ngx-turnstile')
       .last()
       .find('div')

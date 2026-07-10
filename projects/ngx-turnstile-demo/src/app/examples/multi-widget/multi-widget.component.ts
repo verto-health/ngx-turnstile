@@ -8,18 +8,17 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
   standalone: true,
   template: `
     <ng-container>
-      <p>Both widgets below should render on the same page.</p>
+      <p>
+        A normally-rendered widget and a conditionally-rendered one. Both should
+        render on the same page; toggling the checkbox mounts/unmounts the
+        second one.
+      </p>
+
       <ngx-turnstile
         [siteKey]="siteKey"
         theme="light"
-        (resolved)="onResolved('widget-1', $event)"
-        (errored)="onErrored('widget-1', $event)"
-      ></ngx-turnstile>
-      <ngx-turnstile
-        [siteKey]="siteKey"
-        theme="light"
-        (resolved)="onResolved('widget-2', $event)"
-        (errored)="onErrored('widget-2', $event)"
+        (resolved)="onResolved('widget-normal', $event)"
+        (errored)="onErrored('widget-normal', $event)"
       ></ngx-turnstile>
 
       <label>
@@ -45,9 +44,10 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
 export class MultiWidgetComponent {
   siteKey = '1x00000000000000000000AA';
 
-  // Toggled by the checkbox to mount/unmount a widget on demand — reproduces
-  // the conditional-render race from issue #49.
-  showConditionalWidget = false;
+  // Rendered on load so both widgets mount together (exercises the shared
+  // script-load callback), and toggled off/on to reproduce the
+  // conditional-render race from issue #49.
+  showConditionalWidget = true;
 
   onResolved(widget: string, response: string | null) {
     console.log('onResolved', widget, response);
