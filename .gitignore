@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local design/brainstorming docs (not part of the published package)
+docs/superpowers/

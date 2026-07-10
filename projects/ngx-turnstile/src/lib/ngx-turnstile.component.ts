@@ -57,11 +57,24 @@ export class NgxTurnstileComponent implements OnDestroy {
   @Input() version: SupportedVersion = '0';
   @Input() tabIndex?: number;
   @Input() appearance?: 'always' | 'execute' | 'interaction-only' = 'always';
+  @Input() execution?: 'render' | 'execute';
   @Input() retry?: 'never' | 'auto' = 'auto';
+  @Input() retryInterval?: number;
+  @Input() refreshExpired?: 'auto' | 'manual' | 'never';
+  @Input() refreshTimeout?: 'auto' | 'manual' | 'never';
   @Input() size?: 'normal' | 'flexible' | 'compact' = 'normal';
+  @Input() responseField?: boolean;
+  @Input() responseFieldName?: string;
+  @Input() feedbackEnabled?: boolean;
+  @Input() offlabelShowPrivacy?: boolean;
+  @Input() offlabelShowHelp?: boolean;
 
   @Output() resolved = new EventEmitter<string | null>();
   @Output() errored = new EventEmitter<string | null>();
+  @Output() beforeInteractive = new EventEmitter<void>();
+  @Output() afterInteractive = new EventEmitter<void>();
+  @Output() unsupported = new EventEmitter<void>();
+  @Output() timeout = new EventEmitter<void>();
 
   private widgetId = signal<string | null | undefined>(undefined);
 
@@ -169,7 +182,49 @@ export class NgxTurnstileComponent implements OnDestroy {
       'expired-callback': () => {
         this.zone.run(() => this.reset());
       },
+      'before-interactive-callback': () => {
+        this.zone.run(() => this.beforeInteractive.emit());
+      },
+      'after-interactive-callback': () => {
+        this.zone.run(() => this.afterInteractive.emit());
+      },
+      'unsupported-callback': () => {
+        this.zone.run(() => this.unsupported.emit());
+      },
+      'timeout-callback': () => {
+        this.zone.run(() => this.timeout.emit());
+      },
     };
+
+    // Only forward optional parameters when set, so we never override
+    // Cloudflare's defaults with an explicit `undefined`.
+    if (this.execution !== undefined) {
+      turnstileOptions.execution = this.execution;
+    }
+    if (this.retryInterval !== undefined) {
+      turnstileOptions['retry-interval'] = this.retryInterval;
+    }
+    if (this.refreshExpired !== undefined) {
+      turnstileOptions['refresh-expired'] = this.refreshExpired;
+    }
+    if (this.refreshTimeout !== undefined) {
+      turnstileOptions['refresh-timeout'] = this.refreshTimeout;
+    }
+    if (this.responseField !== undefined) {
+      turnstileOptions['response-field'] = this.responseField;
+    }
+    if (this.responseFieldName !== undefined) {
+      turnstileOptions['response-field-name'] = this.responseFieldName;
+    }
+    if (this.feedbackEnabled !== undefined) {
+      turnstileOptions['feedback-enabled'] = this.feedbackEnabled;
+    }
+    if (this.offlabelShowPrivacy !== undefined) {
+      turnstileOptions['offlabel-show-privacy'] = this.offlabelShowPrivacy;
+    }
+    if (this.offlabelShowHelp !== undefined) {
+      turnstileOptions['offlabel-show-help'] = this.offlabelShowHelp;
+    }
 
     // Remove any existing widget so re-rendering doesn't create duplicates.
     this.remove();
