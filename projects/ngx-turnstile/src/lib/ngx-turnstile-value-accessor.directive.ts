@@ -3,14 +3,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxTurnstileComponent } from './ngx-turnstile.component';
 
 @Directive({
-    selector: 'ngx-turnstile[formControl], ngx-turnstile[formControlName], ngx-turnstile[ngModel]',
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => NgxTurnstileValueAccessorDirective),
-            multi: true,
-        },
-    ],
+  selector:
+    'ngx-turnstile[formControl], ngx-turnstile[formControlName], ngx-turnstile[ngModel]',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NgxTurnstileValueAccessorDirective),
+      multi: true,
+    },
+  ],
 })
 export class NgxTurnstileValueAccessorDirective
   implements ControlValueAccessor, OnInit

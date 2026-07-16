@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 type TurnstileSize = 'normal' | 'flexible' | 'compact';
 
 @Component({
-    selector: 'app-different-size',
-    template: `
+  selector: 'app-different-size',
+  template: `
     <ng-container>
       <div class="mb-3">
         <label for="sizeSelect" class="form-label">Widget Size</label>
@@ -32,7 +32,7 @@ type TurnstileSize = 'normal' | 'flexible' | 'compact';
       ></ngx-turnstile>
     </ng-container>
   `,
-    imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule]
+  imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule],
 })
 export class DifferentSizeComponent {
   token: string = '';
