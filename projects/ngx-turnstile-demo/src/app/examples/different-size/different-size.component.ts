@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,10 +39,10 @@ export class DifferentSizeComponent {
   siteKey = '1x00000000000000000000AA';
   size: TurnstileSize = 'normal';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  constructor() {
     this.route.queryParamMap.subscribe((params) => {
       const sizeParam = params.get('size');
       if (

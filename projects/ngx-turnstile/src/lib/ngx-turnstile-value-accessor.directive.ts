@@ -1,4 +1,4 @@
-import { Directive, forwardRef, OnInit } from '@angular/core';
+import { Directive, forwardRef, inject, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxTurnstileComponent } from './ngx-turnstile.component';
 
@@ -20,7 +20,7 @@ export class NgxTurnstileValueAccessorDirective
   private onTouched!: () => void;
   private resolved: boolean = false;
 
-  constructor(private turnstileComp: NgxTurnstileComponent) {}
+  private turnstileComp = inject(NgxTurnstileComponent);
 
   ngOnInit(): void {
     this.turnstileComp.resolved.subscribe((token: string) => {
