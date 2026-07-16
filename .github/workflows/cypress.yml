@@ -17,17 +17,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install Angular
-        run: npm install -g @angular/cli
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Build ngx-turnstile
-        run: ng build ngx-turnstile
+        run: npx ng build ngx-turnstile
       - name: Run Cypress for environment
         uses: cypress-io/github-action@v6
         with:
           start: |
-            ng serve ngx-turnstile-demo --host 0.0.0.0
+            npx ng serve ngx-turnstile-demo --host 0.0.0.0
           wait-on: "http://0.0.0.0:4200"
           wait-on-timeout: 300
           browser: chrome
