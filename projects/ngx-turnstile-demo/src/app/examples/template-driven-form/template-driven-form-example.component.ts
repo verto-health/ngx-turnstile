@@ -3,9 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 
 @Component({
-  selector: 'app-reactive-form-example',
-  standalone: true,
-  template: ` <ng-container
+    selector: 'app-reactive-form-example',
+    template: ` <ng-container
     ><ngx-turnstile
       [siteKey]="siteKey"
       theme="light"
@@ -21,7 +20,7 @@ import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
       Set to Invalid Value
     </button>
   </ng-container>`,
-  imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule],
+    imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule]
 })
 export class TemplateDrivenFormExampleComponent {
   token: string = '';

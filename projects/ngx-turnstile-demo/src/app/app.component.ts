@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  styles: [
-    `
+    selector: 'app-root',
+    styles: [
+        `
       .container {
         display: flex;
         flex-direction: row;
@@ -52,9 +52,8 @@ import { RouterModule } from '@angular/router';
         transition: font-size 1s;
       }
     `,
-  ],
-  standalone: true,
-  template: `
+    ],
+    template: `
     <div class="container pt-5">
       <div class="example-container">
         <h5>Examples:</h5>
@@ -133,6 +132,6 @@ import { RouterModule } from '@angular/router';
       </main>
     </div>
   `,
-  imports: [RouterModule],
+    imports: [RouterModule]
 })
 export class AppComponent {}

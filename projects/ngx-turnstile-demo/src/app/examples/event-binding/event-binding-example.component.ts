@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
-  selector: 'app-regular-example',
-  standalone: true,
-  template: `
+    selector: 'app-regular-example',
+    template: `
     <ng-container>
       <ngx-turnstile
         [siteKey]="siteKey"
@@ -14,7 +13,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       ></ngx-turnstile>
     </ng-container>
   `,
-  imports: [NgxTurnstileModule],
+    imports: [NgxTurnstileModule]
 })
 export class EventBindingExampleComponent {
   siteKey = '1x00000000000000000000AA';

@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
-  selector: 'app-multi-widget-example',
-  standalone: true,
-  template: `
+    selector: 'app-multi-widget-example',
+    template: `
     <ng-container>
       <p>
         A normally-rendered widget and a conditionally-rendered one. Both should
@@ -39,7 +38,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       ></ngx-turnstile>
     </ng-container>
   `,
-  imports: [NgxTurnstileModule, NgIf, FormsModule],
+    imports: [NgxTurnstileModule, NgIf, FormsModule]
 })
 export class MultiWidgetComponent {
   siteKey = '1x00000000000000000000AA';

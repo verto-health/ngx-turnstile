@@ -3,9 +3,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgxTurnstileFormsModule, NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
-  selector: 'app-reactive-form-example',
-  standalone: true,
-  template: ` <ng-container>
+    selector: 'app-reactive-form-example',
+    template: ` <ng-container>
     <ngx-turnstile
       [siteKey]="siteKey"
       theme="light"
@@ -28,7 +27,7 @@ import { NgxTurnstileFormsModule, NgxTurnstileModule } from 'ngx-turnstile';
       Reset Form Control
     </button>
   </ng-container>`,
-  imports: [NgxTurnstileModule, NgxTurnstileFormsModule, ReactiveFormsModule],
+    imports: [NgxTurnstileModule, NgxTurnstileFormsModule, ReactiveFormsModule]
 })
 export class ReactiveFormExampleComponent implements OnInit {
   siteKey = '1x00000000000000000000AA';
