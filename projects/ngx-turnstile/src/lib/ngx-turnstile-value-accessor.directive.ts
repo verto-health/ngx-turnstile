@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/directive-selector -- selector targets the host <ngx-turnstile> element */
 import { Directive, forwardRef, inject, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxTurnstileComponent } from './ngx-turnstile.component';
