@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule } from 'ngx-turnstile';
 
@@ -29,16 +29,17 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
         Show conditionally-rendered widget
       </label>
 
-      <ngx-turnstile
-        *ngIf="showConditionalWidget"
-        [siteKey]="siteKey"
-        theme="light"
-        (resolved)="onResolved('widget-conditional', $event)"
-        (errored)="onErrored('widget-conditional', $event)"
-      ></ngx-turnstile>
+      @if (showConditionalWidget) {
+        <ngx-turnstile
+          [siteKey]="siteKey"
+          theme="light"
+          (resolved)="onResolved('widget-conditional', $event)"
+          (errored)="onErrored('widget-conditional', $event)"
+        ></ngx-turnstile>
+      }
     </ng-container>
   `,
-  imports: [NgxTurnstileModule, NgIf, FormsModule],
+  imports: [NgxTurnstileModule, FormsModule],
 })
 export class MultiWidgetComponent {
   siteKey = '1x00000000000000000000AA';
