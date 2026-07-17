@@ -1,19 +1,20 @@
 import {
   Component,
   ElementRef,
+  inject,
   Input,
   NgZone,
   Output,
   EventEmitter,
   OnDestroy,
-  Inject,
   PLATFORM_ID,
   afterNextRender,
   signal,
   computed,
+  DOCUMENT,
 } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { TurnstileOptions } from './interfaces/turnstile-options';
 
 declare global {
@@ -84,17 +85,17 @@ export class NgxTurnstileComponent implements OnDestroy {
   /** Whether a widget is currently rendered. Clients can watch this signal. */
   public widgetLoaded = computed(() => !!this.widgetId());
 
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private zone = inject(NgZone);
+  private document = inject<Document>(DOCUMENT);
+  private platformId = inject(PLATFORM_ID);
+
   // Notifies this instance when the shared script finishes loading. Kept as a
   // stable reference so it can be removed from the listener set on destroy.
   private onScriptLoad = (): void =>
     this.zone.run(() => this.scriptLoaded.set(true));
 
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private zone: NgZone,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {
+  constructor() {
     // Touching `window` is only safe in the browser (skip during SSR).
     if (isPlatformBrowser(this.platformId)) {
       this.loadScript();

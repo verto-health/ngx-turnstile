@@ -28,4 +28,4 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run unit tests
-        run: npx ng test ngx-turnstile --watch=false --browsers=ChromeHeadless
+        run: npx ng test ngx-turnstile --watch=false
