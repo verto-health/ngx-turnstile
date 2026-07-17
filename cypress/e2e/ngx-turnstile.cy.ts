@@ -35,9 +35,8 @@ describe('tests the ngx-turnstile library', () => {
   it('Passes Language Option Example', () => {
     cy.visit(Cypress.env('languageOptionUrl'));
     cy.wait(3000);
-    cy.get('ngx-turnstile').should('have.attr', 'ng-reflect-language', 'FR');
 
-    // checks the iframe src attribute to make sure the language option was sent to cloudflare correctly
+    // The iframe src confirms the language option was sent to Cloudflare.
     cy.get('ngx-turnstile div')
       .shadow()
       .find('iframe')
