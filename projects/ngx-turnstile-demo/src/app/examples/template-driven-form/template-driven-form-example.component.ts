@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 
@@ -20,6 +20,7 @@ import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
       Set to Invalid Value
     </button>
   </ng-container>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule],
 })
 export class TemplateDrivenFormExampleComponent {

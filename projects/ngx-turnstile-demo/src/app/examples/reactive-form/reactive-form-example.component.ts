@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgxTurnstileFormsModule, NgxTurnstileModule } from 'ngx-turnstile';
 
@@ -27,6 +27,7 @@ import { NgxTurnstileFormsModule, NgxTurnstileModule } from 'ngx-turnstile';
       Reset Form Control
     </button>
   </ng-container>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgxTurnstileModule, NgxTurnstileFormsModule, ReactiveFormsModule],
 })
 export class ReactiveFormExampleComponent implements OnInit {

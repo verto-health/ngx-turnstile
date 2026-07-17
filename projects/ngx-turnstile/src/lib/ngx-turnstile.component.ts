@@ -11,10 +11,11 @@ import {
   afterNextRender,
   signal,
   computed,
-  DOCUMENT,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { isPlatformBrowser } from '@angular/common';
+// DOCUMENT from @angular/common (not @angular/core) for Angular 18/19 support.
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { TurnstileOptions } from './interfaces/turnstile-options';
 
 declare global {
@@ -47,6 +48,7 @@ const scriptLoadListeners = new Set<() => void>();
   selector: 'ngx-turnstile',
   template: ``,
   exportAs: 'ngx-turnstile',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class NgxTurnstileComponent implements OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,6 +32,7 @@ type TurnstileSize = 'normal' | 'flexible' | 'compact';
       ></ngx-turnstile>
     </ng-container>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgxTurnstileModule, NgxTurnstileFormsModule, FormsModule],
 })
 export class DifferentSizeComponent {

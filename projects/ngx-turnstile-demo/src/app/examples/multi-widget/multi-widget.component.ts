@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule } from 'ngx-turnstile';
@@ -39,6 +39,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       }
     </ng-container>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgxTurnstileModule, FormsModule],
 })
 export class MultiWidgetComponent {

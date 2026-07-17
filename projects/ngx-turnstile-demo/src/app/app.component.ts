@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -132,6 +132,7 @@ import { RouterModule } from '@angular/router';
       </main>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule],
 })
 export class AppComponent {}
