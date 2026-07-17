@@ -9,13 +9,5 @@
     "types": []
   },
   "include": ["src/lib/**/*.ts", "src/public-api.ts"],
-  "exclude": ["**/*.spec.ts"],
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  }
+  "exclude": ["**/*.spec.ts"]
 }

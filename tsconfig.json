@@ -15,7 +15,6 @@
       "ngx-turnstile": ["dist/ngx-turnstile"]
     },
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
