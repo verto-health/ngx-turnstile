@@ -4,7 +4,6 @@ import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 
 @Component({
   selector: 'app-reactive-form-example',
-  standalone: true,
   template: ` <ng-container
     ><ngx-turnstile
       [siteKey]="siteKey"

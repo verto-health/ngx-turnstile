@@ -53,7 +53,6 @@ import { RouterModule } from '@angular/router';
       }
     `,
   ],
-  standalone: true,
   template: `
     <div class="container pt-5">
       <div class="example-container">

@@ -3,7 +3,6 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
   selector: 'app-regular-example',
-  standalone: true,
   template: `
     <ng-container>
       <ngx-turnstile

@@ -7,7 +7,6 @@ type TurnstileSize = 'normal' | 'flexible' | 'compact';
 
 @Component({
   selector: 'app-different-size',
-  standalone: true,
   template: `
     <ng-container>
       <div class="mb-3">

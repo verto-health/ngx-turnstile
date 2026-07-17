@@ -1,0 +1,31 @@
+name: Build ngx-turnstile
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run eslint
+        run: npx ng lint
+      - name: Build ngx-turnstile
+        run: npx ng build ngx-turnstile
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run unit tests
+        run: npx ng test ngx-turnstile --watch=false --browsers=ChromeHeadless

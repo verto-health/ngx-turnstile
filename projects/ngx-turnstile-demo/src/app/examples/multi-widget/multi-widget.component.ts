@@ -5,7 +5,6 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
   selector: 'app-multi-widget-example',
-  standalone: true,
   template: `
     <ng-container>
       <p>
