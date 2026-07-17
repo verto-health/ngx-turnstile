@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgxTurnstileModule } from 'ngx-turnstile';
 
 @Component({
@@ -13,6 +13,7 @@ import { NgxTurnstileModule } from 'ngx-turnstile';
       ></ngx-turnstile>
     </ng-container>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgxTurnstileModule],
 })
 export class EventBindingExampleComponent {

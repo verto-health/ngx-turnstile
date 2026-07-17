@@ -12,6 +12,7 @@ import {
   signal,
   computed,
   DOCUMENT,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
@@ -47,6 +48,7 @@ const scriptLoadListeners = new Set<() => void>();
   selector: 'ngx-turnstile',
   template: ``,
   exportAs: 'ngx-turnstile',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class NgxTurnstileComponent implements OnDestroy {
