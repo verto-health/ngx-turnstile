@@ -16,7 +16,7 @@ export default defineConfig(() => ({
       resolve(__dirname, 'projects/ngx-turnstile/src/test-setup.ts'),
     ],
     environment: 'jsdom',
-    include: ['src/**/*.spec.ts', 'projects/ngx-turnstile/src/**/*.spec.ts'],
+    include: ['src/**/*.spec.ts'],
     reporters: ['default'],
   },
 }));

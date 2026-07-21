@@ -6,6 +6,7 @@ import { NgxTurnstileComponent } from './ngx-turnstile.component';
 @Directive({
   selector:
     'ngx-turnstile[formControl], ngx-turnstile[formControlName], ngx-turnstile[ngModel]',
+  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
