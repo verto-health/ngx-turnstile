@@ -116,9 +116,6 @@
             "buildTarget": "ngx-turnstile-demo:build"
           }
         },
-        "test": {
-          "builder": "@analogjs/vitest-angular:test"
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {

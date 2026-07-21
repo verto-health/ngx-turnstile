@@ -1,4 +1,10 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NgxTurnstileModule, NgxTurnstileFormsModule } from 'ngx-turnstile';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,9 +48,12 @@ export class DifferentSizeComponent {
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor() {
-    this.route.queryParamMap.subscribe((params) => {
+    // OnPush: a router emission (e.g. browser back/forward) mutates `size`
+    // outside a template event, so mark the view dirty to re-render.
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
       const sizeParam = params.get('size');
       if (
         sizeParam === 'normal' ||
@@ -55,6 +64,7 @@ export class DifferentSizeComponent {
       } else {
         this.size = 'normal';
       }
+      this.cdr.markForCheck();
     });
   }
 
